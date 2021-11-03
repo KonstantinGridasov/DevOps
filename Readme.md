@@ -1,16 +1,7 @@
-# Terraform
-
-[install terraform](https://www.terraform.io/)
+# Devops 
 
 
-Initialize project:
-
-    terraform init
-    
-What need to do:
-
-    terraform plan 
-    
-To do :
-
-    terraform apply
+1. Terraform 
+2. K8s
+3. Jenkins 
+4. Aws 
