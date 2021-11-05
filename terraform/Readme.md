@@ -1,7 +1,9 @@
 # Terraform
 
-[install terraform](https://www.terraform.io/)
+[Download terraform](https://www.terraform.io/)
 
+Install terraform :
+   mv ~/Downloads/terraform /usr/local/bin    
 
 Initialize project:
 
