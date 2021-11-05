@@ -1,0 +1,12 @@
+Use many ports into 
+ # into resource "aws_security_group"
+  dynamic "ingress" {
+    for_each = ["80", "8080"]
+    content {
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+

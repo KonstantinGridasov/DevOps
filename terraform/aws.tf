@@ -8,6 +8,7 @@ resource "aws_instance" "my_webserver" {
   ami                    = "ami-09042b2f6d07d164a"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.my_webserver.id]
+
 }
 
 resource "aws_security_group" "my_webserver" {
@@ -39,5 +40,7 @@ resource "aws_security_group" "my_webserver" {
     # ipv6_cidr_blocks = ["::/0"]
   }
 
+  
 
 }
+
