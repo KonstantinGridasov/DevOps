@@ -1,12 +1,54 @@
-Use many ports into 
- # into resource "aws_security_group"
-  dynamic "ingress" {
-    for_each = ["80", "8080"]
-    content {
-      from_port   = ingress.value
-      to_port     = ingress.value
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+1. Use many ports into 
+ resource "aws_security_group" "my_webserver"{
+    
+    
+    dynamic "ingress" {
+      for_each = ["80", "8080"]
+      content {
+        from_port   = ingress.value
+        to_port     = ingress.value
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+      }
     }
   }
+
+2.Use static  data 
+resource "aws_instance" "my_webserver" {
+  user_data = file('path to sh')
+}
+
+
+3.Use dinamic  data  (bash.sh file rename to bash.sh.template)
+resource "aws_instance" "my_webserver" {
+  user_data = templatefile('path to sh ',{
+    f_name = "Ss",
+    s_name = "ss",
+    list = ["s","d","f"]
+  })
+}
+Into bash.sh.template
+ My name is ${f_name} 
+ %{ for x in list ~}
+ Hello ${x} 
+ %{ endfor ~}
+
+
+
+4. Lifecycle
+  into  resource "aws_instance" "my_webserver" 
+  1. Not destroy
+    lifecycle {
+        prevent_destroy = true
+      }   
+  2. Ignore change 
+      lifecycle {
+        ignore_changes = ["ami"]
+      }
+  3. 
+    lifecycle {
+      create_before_destroy = true
+    }
+
+  
 
