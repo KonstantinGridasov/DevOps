@@ -51,4 +51,8 @@ Into bash.sh.template
     }
 
   
+5. Outputs
+  output "web_server_instance_id" {
+    value = aws_instance.my_webserver.id
 
+  }
