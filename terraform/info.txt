@@ -1,7 +1,5 @@
 1. Use many ports into 
  resource "aws_security_group" "my_webserver"{
-    
-    
     dynamic "ingress" {
       for_each = ["80", "8080"]
       content {
@@ -54,5 +52,14 @@ Into bash.sh.template
 5. Outputs
   output "web_server_instance_id" {
     value = aws_instance.my_webserver.id
-
   }
+
+6.Static IP
+  resource "aws_eip" "my_static_ip" {
+      instance = aws_instance.my_webserver.id
+}
+
+7.Into resource "aws_instance" "my_webserver" 
+  (Create after && Destroy before)
+    depends_on = [aws_instance.server_bd] 
+    
