@@ -1,0 +1,15 @@
+{
+  "Id": "Policy1637063584609",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Stmt1637062446486",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::test-my-gk-bucket",
+      "Principal": "*"
+    }
+  ]
+}
