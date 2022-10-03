@@ -1,6 +1,6 @@
 name: UPDATE
 env:
-  EB_APPLICATION_NAME       : "tryon"
+  EB_APPLICATION_NAME       : "test"
   AWS_REGION_NAME           : "us-east-1"
   AWS_INSTANCE_TYPE         : "t2.micro"
 
@@ -29,16 +29,17 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install awsebcli --upgrade
+          
+      - name: Create S3 Bucket  && Put S3 Bucket Policy
+        run: aws s3api head-bucket --bucket test.${GITHUB_REF##*/}.bucket ||
+          aws s3api create-bucket --bucket test.${GITHUB_REF##*/}.bucket --region ${{ env.AWS_REGION_NAME }} &&
+          aws s3api put-bucket-policy --bucket test.${GITHUB_REF##*/}.bucket --policy "{\"Version\":\"2012-10-17\",\"Id\":\"Policy1645688763071\",\"Statement\":[{\"Sid\":\"Stmt1645688760645\",\"Effect\":\"Allow\",\"Principal\":\"*\",\"Action\":[\"s3:GetObject\"],\"Resource\":\"arn:aws:s3:::test.${GITHUB_REF##*/}.bucket/*\"}]}"
 
       - name: Initilazed CLI
         run: eb init ${{ env.EB_APPLICATION_NAME }}-${GITHUB_REF##*/}-app -p "64bit Amazon Linux 2 v3.3.8 running Python 3.8" --region ${{ env.AWS_REGION_NAME }}
 
-      - name: Create envrinment by CLI
-        if: ${{ github.event_name == 'create'}}
-        run: eb create ${{ env.EB_APPLICATION_NAME }}-${GITHUB_REF##*/}-env -it ${{ env.AWS_INSTANCE_TYPE }} --single
-
-      - name: Deploy new ElasticBeanstalk Application Version
-        run: eb deploy
+       - name: Deploy code
+        run: eb deploy ${{ env.EB_APPLICATION_NAME }}-${GITHUB_REF##*/}-env || eb create ${{ env.EB_APPLICATION_NAME }}-${GITHUB_REF##*/}-env -k ${{ env.AWS_SSH_KEYNAME }} -it ${{ env.AWS_INSTANCE_TYPE }} --scale 1 --envvars AWS_REGION=${{ env.AWS_REGION_NAME }},AWS_ACCESS_KEY=${{ secrets.MY_AWS_ACCESS_KEY }},AWS_SECRET_KEY=${{ secrets.MY_AWS_SECRET_KEY }},S3_BUCKET_NAME=tryon.${GITHUB_REF##*/}.bucket,BRANCH=${GITHUB_REF##*/}
 
       - name: Finished
         run: eb status

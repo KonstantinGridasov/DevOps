@@ -1,6 +1,6 @@
 name: DESTROY
 env:
-  EB_APPLICATION_NAME       : "tryon"
+  EB_APPLICATION_NAME       : "test"
   AWS_REGION_NAME           : "us-east-1"
 
 
@@ -29,4 +29,7 @@ jobs:
         run: eb init ${{ env.EB_APPLICATION_NAME }}-${{ github.head_ref }}-app -p "64bit Amazon Linux 2 v3.3.8 running Python 3.8" --region ${{ env.AWS_REGION_NAME }}
 
       - name: Destroy
-        run: eb terminate ${{ env.EB_APPLICATION_NAME }}-${{ github.head_ref }}-env --force --all
+        run: eb terminate ${{ env.EB_APPLICATION_NAME }}-${{ github.head_ref }}-env --force
+
+      - name: Delete S3 bucket
+        run: aws s3 rb s3://test.${{ github.head_ref }}.bucket --force
