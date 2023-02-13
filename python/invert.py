@@ -25,10 +25,13 @@ def invert(_path):
 
     newData = []
     for items in datas:
-        if items[3] == 255 :
+        if items[3] ==255 :
             newData.append((0, 0, 0, 0))
-        else:
+        elif items[3] ==0 :
             newData.append((255, 255, 255, 255))
+        else:
+            item =255-items[3]
+            newData.append((255, 255, 255, item))
 
     img.putdata(newData)
     image_path =_path.split("/")[len(_path.split("/")) - 1].split('.')[0]

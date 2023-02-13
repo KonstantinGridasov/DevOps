@@ -1,0 +1,15 @@
+Create pem key 
+
+On server 
+1. sudo ssh-keygen -t rsa
+
+ (on field location  : /home/user/.ssh/id_rsa )
+
+2. sudo cat  /home/user/.ssh/id_rsa.pub >> /home/user/.ssh/autorized_keys
+
+(If catalog don't exist -> create)
+
+3. Open 
+ sudo cat  /home/user/.ssh/id_rsa 
+
+4 .Copy  ALL to local mashine to file xxx.pem (SAVE ONLY ANSII)
